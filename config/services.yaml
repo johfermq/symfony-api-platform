@@ -19,9 +19,19 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller'
+    App\Controller\Api\:
+        resource: '../src/Controller/Api'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Controller\Api\Listener\JsonExceptionResponseTransformerListener:
+        tags:
+            - {
+                name: kernel.event_listener,
+                event: kernel.exception,
+                method: onKernelException,
+                priority: 100
+            }
+
